@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 18 11:51:53 2019
+Created on Mon Oct 21 16:11:09 2019
 
 @author: mackenziemitchell
 """
 
+  
+#from dash_package.dashboard import app
 from dash import app
 
 if __name__ == "__main__":
