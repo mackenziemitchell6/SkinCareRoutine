@@ -8,7 +8,7 @@ Created on Mon Oct 21 16:11:09 2019
 
   
 #from dash_package.dashboard import app
-from dash import app
+from dash_package import app
 
 if __name__ == "__main__":
     app.run_server(debug=True)

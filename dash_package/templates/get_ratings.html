@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 22 16:08:09 2019
+
+@author: mackenziemitchell
+"""
+
+import pickle
+with open('recdf.pickle', 'rb') as f:
+    rec = pickle.load(f)
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Skincare Recommender</title>
+
+<style>
+h1{color: #00C4CA}
+h2{color: #00C4CA}
+.content {
+  max-width: 500px;
+  margin: auto;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+
+  </head>
+  <body background="{{url_for('static', filename='backgr.jpg')}}">
+
+    <img src="{{url_for('static', filename='washing-face.jpg')}}" alt="fresh" width="800" class="center"/>
+
+    <h1 style="text-align:center;">Find your perfect skincare routine!!</h1>
+
+    <a class="nav-item nav-link text-muted" href="dash">Dashboard</a>
+    <form method="POST" style="text-align:center;" action="/">
+         <h2 style="text-align:center;">Please rate this product:</h2><br>
+         <input type="range" min="1" max="5" name="rating">rating[0]<br>
+         <h2 style="text-align:center;">Please rate this product:</h2><br>
+         <input type="range" min="1" max="5" name="rating">rating[1]<br>
+         <h2 style="text-align:center;">Please rate this product:</h2><br>
+         <input type="range" min="1" max="5" name="rating">rating[2]<br>
+    
+
+  </body>
+</html>

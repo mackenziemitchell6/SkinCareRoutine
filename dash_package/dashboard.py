@@ -11,24 +11,32 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pickle
 import plotly.graph_objs as go
+from dash_package import app
 
-with open('userratingsDF.pickle', 'rb') as f:
-    dfr = pickle.load(f)
-with open('CategoricalItemDF.pickle', 'rb') as f:
-    full = pickle.load(f)
-with open('_SENT&RATINGDF.pickle', 'rb') as f:
-    df1 = pickle.load(f)
-with open('recdf.pickle', 'rb') as f:
-    rec = pickle.load(f)
-with open('ratingsmeandf.pickle', 'rb') as f:
-    fullm = pickle.load(f)
+import dash_core_components as dcc
+import dash_html_components as html
+
+from functions1 import *
+#from dash_package.functions import *
+
+#with open('userratingsDF.pickle', 'rb') as f:
+ #   dfr = pickle.load(f)
+ 
+full = pickle.load(open("CategoricalItemDF.pickle", "rb"))
+#with open('_SENT&RATINGDF.pickle', 'rb') as f:
+ #   df1 = pickle.load(f)
+#with open('recdf.pickle', 'rb') as f:
+ #   rec = pickle.load(f)
+fullm = pickle.load(open("ratingsmeandf.pickle", "rb"))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(children=[
     html.H1(children='Skincare Products EDA Visuals'),
+    
+    ## PUT LINK! dcc.
 
     html.Div(children='''
         Dash: A web application framework for Python.
@@ -78,15 +86,19 @@ app.layout = html.Div(children=[
         id='ratingcount-graph',
         figure={
             'data': [
-                {'x': fullm['rating_count'].mean(), 'y': fullm['rating'], 'type': 'scatter','name':'Ratings'}
+                {'x': fullm['rating_count'].mean(), 'y': fullm['rating'].sort_values(),'type': 'scatter','name':'Ratings'}
             ],
             
             'layout': {
-                'title': 'Rating v. RatingCount'
+                'title': 'Rating v. RatingCount',
+                'xaxis':{
+                        'title':'Rating Count'},
+                'yaxis':{
+                        'title':'Rating'}
                 }
         }
     )
 ])
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+#if __name__ == '__main__':
+ #   app.run_server(debug=True)

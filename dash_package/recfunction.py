@@ -41,15 +41,16 @@ with open('ratingsmeandf.pickle', 'rb') as f:
 with open('newratingsDFwithimg.pickle', 'rb') as f:
     images = pickle.load(f)
 
-def skin_rater(movie_df,num, typ=None):
+def get_prefs():
+    
+def skin_rater(movie_df,num, stype=None, ptype=None, raw_uid):
     rating_list = []
-    knn_baseline = KNNBaseline(sim_options={'name':'pearson_baseline','user_based':False})
     #Start with 'normal/combination skin df'
     df=movie_df.loc[movie_df['normal']==1].copy()
-    raw_uid=input('type username: ')
+    #raw_uid=input('type username: ')
     #filter df by preferences
-    stype=input('What is your skin type or skin problems? Type all that apply: dry, sensitive, oily, redness, dark circles, aging. (n if none apply) ')
-    ptype=input('Are you looking for any of these products? \ncleanser \nexfoliator\n makeup-remover\n toner \nmist \ntreatment \nserum \n lotion \nmoisturizer \nbalm \noil \nmask \npeel \nlip \neye \nsupplement \ntool ')
+    #stype=input('What is your skin type or skin problems? Type all that apply: dry, sensitive, oily, redness, dark circles, aging. (n if none apply) ')
+    #ptype=input('Are you looking for any of these products? \ncleanser \nexfoliator\n makeup-remover\n toner \nmist \ntreatment \nserum \n lotion \nmoisturizer \nbalm \noil \nmask \npeel \nlip \neye \nsupplement \ntool ')
     if 'dry' in stype:
         df=pd.concat([df,movie_df[movie_df['dry']==1]])
     if 'aging' in stype:
@@ -98,15 +99,15 @@ def skin_rater(movie_df,num, typ=None):
         df=pd.concat([df,movie_df[movie_df['tool']==1]])
     df.drop_duplicates(inplace=True)
     #Asking User to rate these products from their preferences
-    while num > 0:
-        p = df.sample(1)
+   # while num > 0:
+    #    p = df.sample(1)
 #         response = requests.get('https://' + p['image'].item())
 #         img = Image.open(BytesIO(response.content))
 #         print(p[['brandName','prodName','url']],'https://' + str(p['image']))
-        print(p[['brandName','prodName','url']])
-        rating = input('How do you rate this product on a scale of 1-5, press n if you have not used :\n')
-        if rating == 'n':
-            continue
+       # print(p[['brandName','prodName','url']])
+        #rating = input('How do you rate this product on a scale of 1-5, press n if you have not used :\n')
+        #if rating == 'n':
+         #   continue
         #Keeping Track of the new user's ratings
         else:
             rating_one_movie = {'user':raw_uid,'url':p['url'].values[0],'rating':rating}
@@ -114,6 +115,7 @@ def skin_rater(movie_df,num, typ=None):
             num -= 1
     new_ratings_df = df[['user','url','rating']].append(rating_list,ignore_index=True)
     new_data = Dataset.load_from_df(new_ratings_df,reader)
+    knn_baseline = KNNBaseline(sim_options={'name':'pearson_baseline','user_based':False})
     train, test=train_test_split(new_data, test_size=0.2, random_state=42, shuffle=True)
     knn_baseline.fit(train)
     #preds=knn_baseline.test(test)
