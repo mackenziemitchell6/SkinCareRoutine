@@ -6,10 +6,6 @@ Created on Tue Oct 22 11:16:10 2019
 @author: mackenziemitchell
 """
 
-import pickle
-with open('recdf.pickle', 'rb') as f:
-    rec = pickle.load(f)
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -74,9 +70,9 @@ h2{color: #00C4CA}
         <input type="checkbox" value="eye" name="stype"> Eye Product<br>
         <input type="checkbox" value="supplement" name="stype"> Supplement<br>
         <input type="checkbox" value="tool" name="stype"> Tool<br>
-        <input type="submit">
+        <button type="button" onclick="window.location.href='{{url_for('new_ratings')}}'">Submit</button>
     </form>
 
-    <a class="nav-item nav-link text-muted" href="dash">Dashboard</a>
+    <a class="nav-item nav-link text-muted" href="dash/">Dashboard</a>
   </body>
 </html>

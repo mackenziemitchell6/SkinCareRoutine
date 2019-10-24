@@ -59,9 +59,9 @@ def get_samples(df,num=3):
     return torate
 
 
-def skin_rater(rating_list):
+def skin_rater(new_rates):
     knn_baseline = KNNBaseline(sim_options={'name':'pearson_baseline','user_based':False})
-    new_ratings_df = df[['user','url','rating']].append(rating_list,ignore_index=True)
+    new_ratings_df = df[['user','url','rating']].append(new_rates,ignore_index=True)
     new_data = Dataset.load_from_df(new_ratings_df,reader)
     train, test=train_test_split(new_data, test_size=0.2, random_state=42, shuffle=True)
     knn_baseline.fit(train)

@@ -86,7 +86,7 @@ app.layout = html.Div(children=[
         id='ratingcount-graph',
         figure={
             'data': [
-                {'x': fullm['rating_count'].mean(), 'y': fullm['rating'].sort_values(),'type': 'scatter','name':'Ratings'}
+                {'x': fullm['rating_count'].mean(), 'y': fullm['rating'].sort_values(),'type': 'scatter','name':'Ratings','text':fullm.index}
             ],
             
             'layout': {
@@ -98,7 +98,9 @@ app.layout = html.Div(children=[
                 }
         }
     )
+            
 ])
+            
 
 #if __name__ == '__main__':
  #   app.run_server(debug=True)
