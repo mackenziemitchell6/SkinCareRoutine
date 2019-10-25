@@ -2,13 +2,20 @@
  "cells": [
   {
    "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import streamlit as st"
+   ]
+  },
+  {
+   "cell_type": "code",
    "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
-    "import streamlit as st\n",
-    "x = st.slider('x')\n",
-    "st.write(x, 'squared is', x * x)"
+    "st.title(\"Skincare Routine Recommender\")"
    ]
   }
  ],

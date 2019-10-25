@@ -6,12 +6,18 @@ Created on Mon Oct 21 13:40:07 2019
 @author: mackenziemitchell
 """
 
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+
+from dash_package import app
+from dash_package.functions import *
 from flask import Flask, render_template, request, redirect, url_for
 
 #from dash_package.dashboard import app
 #from dash_package import app
 
-from dash_package.dashboard import app
+from dash_package import app
 #from functions1 import *
 from functions1 import get_samples, get_dataframe
 import pandas as pd

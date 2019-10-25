@@ -24,7 +24,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
     dcc.Graph(
-        id='life-exp-vs-gdp',
+        id='brandspricesratings',
         figure={
             'data': [
                 go.Scatter(
@@ -48,7 +48,37 @@ app.layout = html.Div([
                 hovermode='closest'
             )
         }
+    ),
+    dcc.Graph(
+        id='rating-graph',
+        figure={
+            'data': [
+                {'x': full['rating'], 'y': full['prodName'], 'type': 'bar','name':'Ratings'}
+            ],
+            
+            'layout': {
+                'title': 'Product v. Rating'
+                }
+        }
+    ),
+    
+    dcc.Graph(
+        id='ratingcount-graph',
+        figure={
+            'data': [
+                {'x': fullm['rating_count'].mean(), 'y': fullm['rating'].sort_values(),'type': 'scatter','name':'Ratings','text':fullm.index}
+            ],
+            
+            'layout': {
+                'title': 'Rating v. RatingCount',
+                'xaxis':{
+                        'title':'Rating Count'},
+                'yaxis':{
+                        'title':'Rating'}
+                }
+        }
     )
+    
 ])
 
 if __name__ == '__main__':
