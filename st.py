@@ -14,10 +14,20 @@ from surprise import Dataset, Reader
 reader= Reader(rating_scale=(1, 5.0))
 from surprise.model_selection import train_test_split
 
+st.title("Skincare Routine Recommender")
+from PIL import Image
+st.image(Image.open("dash_package/static/washing-face.jpg"),width=800)
+
+st.header("Find the Perfect Skincare Routine for your Skin Type!")
+
 with open('df1.pickle', 'rb') as f:
     rec = pickle.load(f)
 df=rec.loc[rec['normal']==1].copy()
-def get_df(df,movie_df,stype, ptype):
+
+def user():
+    raw_uid=st.text_input("Please Enter a Username:")
+    return raw_uid
+def get_df(df,movie_df):
     #rating_list = []
     #knn_baseline = KNNBaseline(sim_options={'name':'pearson_baseline','user_based':False})
     #Start with 'normal/combination skin df'
@@ -26,6 +36,10 @@ def get_df(df,movie_df,stype, ptype):
     #filter df by preferences
     #stype=input('What is your skin type or skin problems? Type all that apply: \ndry \nsensitive \noily \nredness \ndark circles \naging \n(n if none apply):\n ')
     #ptype=input('Are you looking for any of these products? \ncleanser \nexfoliator\nmakeup-remover\ntoner \nmist \ntreatment \nserum \nlotion \nmoisturizer \nbalm \noil \nmask \npeel \nlip \neye \nsupplement \ntool:\n ')
+    stype=st.multiselect("Please select all skin types and problems that apply to you:",['dry','age','dark circles','redness','sensitive','oily'])
+    for s in stype:
+        s.replace(' ','')
+    ptype=st.multiselect("Please select all types of products you are looking for:", ['cleanser','exfoliator','makeup-removers','toner','mist','treatment','serum','lotion','moisturizer','balm','oil','mask','peel','lip','eye','supplement','tool'])
     if 'dry' in stype:
         df=pd.concat([df,movie_df[movie_df['dry']==1]])
     if 'aging' in stype:
@@ -84,15 +98,13 @@ def new_ratings(df, raw_uid):
     u=list(samples.url)
     #for x,y in zip(p,u):
     st.write(p)
-    rating=st.selectbox('How do you rate this product on a scale of 1-5\n',range(1,5),key=i)
+    rating=st.selectbox('How do you rate this product on a scale of 1-5\n',range(1,6),key=i)
         #i+=1
     rating_list.append({'user':raw_uid,'url':u,'rating':rating})
     new_ratings_df=df[['user','url','rating']]
-    print("*****")
-    print(rating_list)
     return new_ratings_df
 
-def recs(new_ratings_df,raw_uid,n):
+def recs(new_ratings_df,raw_uid):
     new_data = Dataset.load_from_df(new_ratings_df,reader)
     knn_baseline = KNNBaseline(sim_options={'name':'pearson_baseline','user_based':False})
     train, test=train_test_split(new_data, test_size=0.2, random_state=42, shuffle=True)
@@ -103,7 +115,7 @@ def recs(new_ratings_df,raw_uid,n):
     for u in new_ratings_df['url'].unique():
         list_of_prods.append((u,knn_baseline.predict(raw_uid,u)[3]))
     ranked_prods = sorted(list_of_prods,key=lambda x:x[1],reverse=True)
-    
+    n=st.selectbox('How many products are you looking for?',[1,2,3,4,5,6,7,8,9,10])
     for idx, re in enumerate(ranked_prods[2:]):
         #title = df.loc[df['url'] == int(re[0])]['prodName']
         u=re[0]
@@ -112,74 +124,10 @@ def recs(new_ratings_df,raw_uid,n):
         if n == 0:
             break
 
-st.title("Skincare Routine Recommender")
-from PIL import Image
-st.image(Image.open("dash_package/static/washing-face.jpg"),width=800)
-
-st.header("Find the Perfect Skincare Routine for your Skin Type!")
-#st.info("Type your username:")
-raw_uid=st.text_input("Please Enter a Username:")
-st.button("Submit Username")
-st.write("Please select all skin types and problems that apply to you:")
-stype=[]
-if st.checkbox('dry'):
-    stype.append('dry')
-if st.checkbox('age'):
-    stype.append('age')
-if st.checkbox('dark circles'):
-    stype.append('darkcircles')
-if st.checkbox('redness'):
-    stype.append('redness')
-if st.checkbox('sensitive'):
-    stype.append('sensitive')
-if st.checkbox('oily'):
-    stype.append('oily')
-    
-st.button("Submit Skin Type")
-st.write("Please select all types of products you are looking for:")
-ptype=[]
-if st.checkbox('cleanser'):
-    ptype.append('cleanser')
-if st.checkbox('exfoliator'):
-    ptype.append('exfoliator')
-if st.checkbox('makeup remover'):
-    ptype.append('makeup-removers')
-if st.checkbox('toner'):
-    ptype.append('toner')
-if st.checkbox('mist'):
-    ptype.append('mist')
-if st.checkbox('treatment'):
-    ptype.append('treatment')
-if st.checkbox('serum'):
-    ptype.append('serum')
-if st.checkbox('lotion'):
-    ptype.append('lotion')
-if st.checkbox('moisturizer'):
-    ptype.append('moisturizer')
-if st.checkbox('balm'):
-    ptype.append('balm')
-if st.checkbox('oil'):
-    ptype.append('oil')
-if st.checkbox('mask'):
-    ptype.append('mask')
-if st.checkbox('peel'):
-    ptype.append('peel')
-if st.checkbox('lip'):
-    ptype.append('lip')
-if st.checkbox('eye'):
-    ptype.append('eye')
-if st.checkbox('supplement'):
-    ptype.append('supplement')
-if st.checkbox('tool'):
-    ptype.append('tool')
-    
-st.button("Submit Product Types")
-df=get_df(df,rec,stype,ptype)
+raw_uid=user()
+df=get_df(df,rec)
 lis=new_ratings(df,raw_uid)
-if st.button("Submit Rating"):
-    recs(lis,raw_uid,5)
-#n=st.text_input('How many products are you looking for?\n')
-#recs(lis,raw_uid,5)
+recs(lis,raw_uid)
 
     
 
