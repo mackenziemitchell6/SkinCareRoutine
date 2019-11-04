@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 18 11:41:11 2019
+Created on Mon Oct 21 12:03:06 2019
 
 @author: mackenziemitchell
 """
@@ -10,53 +10,21 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pickle
+import pandas as pd
 import plotly.graph_objs as go
-from dash_package import app
 
-import dash_core_components as dcc
-import dash_html_components as html
-
-from functions1 import *
-#from dash_package.functions import *
-
-#with open('userratingsDF.pickle', 'rb') as f:
- #   dfr = pickle.load(f)
- 
-full = pickle.load(open("CategoricalItemDF.pickle", "rb"))
-#with open('_SENT&RATINGDF.pickle', 'rb') as f:
- #   df1 = pickle.load(f)
-#with open('recdf.pickle', 'rb') as f:
- #   rec = pickle.load(f)
-fullm = pickle.load(open("ratingsmeandf.pickle", "rb"))
-
+with open('CategoricalItemDF.pickle', 'rb') as f:
+    full = pickle.load(f)
+with open('ratingsmeandf.pickle', 'rb') as f:
+    fullm = pickle.load(f)
+    
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-app.layout = html.Div(children=[
-    html.H1(children='Skincare Products EDA Visuals'),
-    
-    ## PUT LINK! dcc.
-
-    html.Div(children='''
-        Dash: A web application framework for Python.
-    '''),
-
+app.layout = html.Div([
     dcc.Graph(
-        id='rating-graph',
-        figure={
-            'data': [
-                {'x': full['rating'], 'y': full['prodName'], 'type': 'bar','name':'Ratings'}
-            ],
-            
-            'layout': {
-                'title': 'Product v. Rating'
-                }
-        }
-    ),
-    
-    dcc.Graph(
-        id='life-exp-vs-gdp',
+        id='brandspricesratings',
         figure={
             'data': [
                 go.Scatter(
@@ -81,6 +49,18 @@ app.layout = html.Div(children=[
             )
         }
     ),
+    dcc.Graph(
+        id='rating-graph',
+        figure={
+            'data': [
+                {'x': full['rating'], 'y': full['prodName'], 'type': 'bar','name':'Ratings'}
+            ],
+            
+            'layout': {
+                'title': 'Product v. Rating'
+                }
+        }
+    ),
     
     dcc.Graph(
         id='ratingcount-graph',
@@ -98,9 +78,8 @@ app.layout = html.Div(children=[
                 }
         }
     )
-            
+    
 ])
-            
 
 if __name__ == '__main__':
     app.run_server(debug=True)

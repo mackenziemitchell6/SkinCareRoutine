@@ -15,9 +15,7 @@ from dash_package import app
 from flask import Flask, render_template, request, redirect, url_for
 
 #from dash_package.dashboard import app
-#from dash_package import app
-#import app
-#from __init__ import app
+from dash_package import app
 #from functions1 import *
 from functions1 import get_samples, get_dataframe
 import pandas as pd
