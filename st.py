@@ -20,7 +20,7 @@ st.image(Image.open("dash_package/static/washing-face.jpg"),width=800)
 
 st.header("Find the Perfect Skincare Routine for your Skin Type!")
 
-with open('df1.pickle', 'rb') as f:
+with open('pickles/df1.pickle', 'rb') as f:
     rec = pickle.load(f)
 df=rec.loc[rec['normal']==1].copy()
 
@@ -119,7 +119,7 @@ def recs(new_ratings_df,raw_uid):
     for idx, re in enumerate(ranked_prods[2:]):
         #title = df.loc[df['url'] == int(re[0])]['prodName']
         u=re[0]
-        st.write('Recommendation # ',idx+1,'|| ', 'url:', u, '||','product: ', df[df['url']==u]['prodName'].drop_duplicates(),'\n')
+        st.write('Recommendation # ',idx+1,'|| ', 'url:', 'https://www.skinstore.com/the-ordinary-aha-30-bha-2-peeling-solution-30ml/{}.html'.format(u), '||','product: ', df[df['url']==u]['prodName'].drop_duplicates(),'\n')
         n-= 1
         if n == 0:
             break
