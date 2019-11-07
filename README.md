@@ -41,3 +41,7 @@ The dataset contained:
 #### Observing the content sentiment of each review:
 We can see that there are some low ratings that have abnormally high sentiment, and there are also high ratings that have abnormally low sentiment. However, the pattern seems to be roughly as expected.
 ![ContentSent](https://github.com/mackenziemitchell6/SkinCareRoutine/blob/master/Visuals/RatingSentimentPlot.png "Content Sent")
+
+## Modeling
+After trying many different models (KNN Basic, KNN Baseline, KNN with Means) with different parameters ({metric: pearson, cosine, pearson baseline},{user_based: True, False}, as well as SVD with grid search and NMF with grid search, the model with the lowest RMSE was a KNN Baseline model with the pearson baseline metric and item based filtering. 
+  This resulted in an RMSE of 0.9645. 
