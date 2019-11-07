@@ -182,3 +182,94 @@ def recommended_products(user_ratings,df):
         n-= 1
         if n == 0:
             break
+        
+def skin_rec(num, movie_df=rec, typ=None):
+    rating_list = []
+    knn_baseline = KNNBaseline(sim_options={'name':'pearson_baseline','user_based':False})
+    #Start with 'normal/combination skin df'
+    df=movie_df.loc[movie_df['normal']==1].copy()
+    raw_uid=input('type username: ')
+    #filter df by preferences
+    stype=input('What is your skin type or skin problems? Type all that apply: \ndry \nsensitive \noily \nredness \ndark circles \naging \n(n if none apply):\n ')
+    ptype=input('Are you looking for any of these products? \ncleanser \nexfoliator\nmakeup-remover\ntoner \nmist \ntreatment \nserum \nlotion \nmoisturizer \nbalm \noil \nmask \npeel \nlip \neye \nsupplement \ntool:\n ')
+    if 'dry' in stype:
+        df=pd.concat([df,movie_df[movie_df['dry']==1]])
+    if 'aging' in stype:
+        df=pd.concat([df,movie_df[movie_df['age']==1]])
+    if 'dark circles' in stype:
+        df=pd.concat([df,movie_df[movie_df['darkcircles']==1]])
+    if 'redness' in stype:
+        df=pd.concat([df,movie_df[movie_df['redness']==1]])
+    if 'sensitive' in stype:
+        df=pd.concat([df,movie_df[movie_df['sensitive']==1]])
+    if 'oily' in stype:
+        df=pd.concat([df,movie_df[movie_df['oily']==1]])
+    if 'cleanser' in ptype:
+        df=pd.concat([df,movie_df[movie_df['cleanser']==1]])
+    if 'exfoliator' in ptype:
+        df=pd.concat([df,movie_df[movie_df['exfoliator']==1]])
+    if 'makeup-remover' in ptype:
+        df=pd.concat([df,movie_df[movie_df['makeup-removers']==1]])
+    if 'toner' in ptype:
+        df=pd.concat([df,movie_df[movie_df['toner']==1]])
+    if 'mist' in ptype:
+        df=pd.concat([df,movie_df[movie_df['mist']==1]])
+    if 'treatment' in ptype:
+        df=pd.concat([df,movie_df[movie_df['treatment']==1]])
+    if 'serum' in ptype:
+        df=pd.concat([df,movie_df[movie_df['serum']==1]])
+    if 'lotion' in ptype:
+        df=pd.concat([df,movie_df[movie_df['lotion']==1]])
+    if 'moisturizer' in ptype:
+        df=pd.concat([df,movie_df[movie_df['moisturizer']==1]])
+    if 'balm' in ptype:
+        df=pd.concat([df,movie_df[movie_df['balm']==1]])
+    if 'oil' in ptype:
+        df=pd.concat([df,movie_df[movie_df['oil']==1]])
+    if 'mask' in ptype:
+        df=pd.concat([df,movie_df[movie_df['mask']==1]])
+    if 'peel' in ptype:
+        df=pd.concat([df,movie_df[movie_df['peel']==1]])
+    if 'lip' in ptype:
+        df=pd.concat([df,movie_df[movie_df['lip']==1]])
+    if 'eye' in ptype:
+        df=pd.concat([df,movie_df[movie_df['eye']==1]])
+    if 'supplement' in ptype:
+        df=pd.concat([df,movie_df[movie_df['supplement']==1]])
+    if 'tool' in ptype:
+        df=pd.concat([df,movie_df[movie_df['tool']==1]])
+    df.drop_duplicates(inplace=True)
+    #Asking User to rate these products from their preferences
+    while num > 0:
+        p = df.sample(1)
+#         response = requests.get('https://' + p['image'].item())
+#         img = Image.open(BytesIO(response.content))
+#         print(p[['brandName','prodName','url']],'https://' + str(p['image']))
+        print(p[['prodName','url']])
+        rating = input('How do you rate this product on a scale of 1-5, press n if you have not used :\n')
+        if rating == 'n':
+            continue
+        #Keeping Track of the new user's ratings
+        else:
+            rating_one_movie = {'user':raw_uid,'url':p['url'].values[0],'rating':rating}
+            rating_list.append(rating_one_movie) 
+            num -= 1
+    new_ratings_df = df[['user','url','rating']].append(rating_list,ignore_index=True)
+    new_data = Dataset.load_from_df(new_ratings_df,reader)
+    train, test=train_test_split(new_data, test_size=0.2, random_state=42, shuffle=True)
+    knn_baseline.fit(train)
+    #preds=knn_baseline.test(test)
+    
+    list_of_prods=[]
+    for u in new_ratings_df['url'].unique():
+        list_of_prods.append((u,knn_baseline.predict(raw_uid,u)[3]))
+    ranked_prods = sorted(list_of_prods,key=lambda x:x[1],reverse=True)
+    
+    n=int(input('How many products are you looking for?\n'))
+    for idx, re in enumerate(ranked_prods[2:]):
+        title = df.loc[df['url'] == int(re[0])]['prodName']
+        u=re[0]
+        print('Recommendation # ',idx+1,'|| ', 'url:', u, '||','product: ', df[df['url']==u]['prodName'].drop_duplicates(),'\n')
+        n-= 1
+        if n == 0:
+            break
