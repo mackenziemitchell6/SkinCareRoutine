@@ -2,6 +2,8 @@
 
 By Mackenzie Mitchell
 
+![Header](https://github.com/mackenziemitchell6/SkinCareRoutine/blob/master/dash_package/static/washing-face.jpg "Header") 
+
 ## Overview
 
 The goal of this project is to create a recommender system to recommend a set of skincare products (or a skincare routine) to a new user based on their skin type, skin problems, and the types of products they're looking for. Using data on products and reviews scraped from SkinStore.com, I created a recommender system using the surprise package in Python. 
