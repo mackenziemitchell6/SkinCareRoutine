@@ -7,6 +7,7 @@ By Mackenzie Mitchell
 The goal of this project is to create a recommender system to recommend a set of skincare products (or a skincare routine) to a new user based on their skin type, skin problems, and the types of products they're looking for. Using data on products and reviews scraped from SkinStore.com, I created a recommender system using the surprise package in Python. 
 
 ![TargetDistplots](https://github.com/mackenziemitchell6/SkinCareRoutine/blob/master/Visuals/VennDiagram_AllBrands.png "All Brand Distribution")
+![Header](https://github.com/mackenziemitchell6/SkinCareRoutine/blob/master/dash_package/static/washing-face.jpg "Header") 
 
 ## Obtaining Data
 Data scraped using BeautifulSoup from:
@@ -41,3 +42,7 @@ The dataset contained:
 #### Observing the content sentiment of each review:
 We can see that there are some low ratings that have abnormally high sentiment, and there are also high ratings that have abnormally low sentiment. However, the pattern seems to be roughly as expected.
 ![ContentSent](https://github.com/mackenziemitchell6/SkinCareRoutine/blob/master/Visuals/RatingSentimentPlot.png "Content Sent")
+
+## Modeling
+After trying many different models (KNN Basic, KNN Baseline, KNN with Means) with different parameters ({metric: pearson, cosine, pearson baseline},{user_based: True, False}, as well as SVD with grid search and NMF with grid search, the model with the lowest RMSE was a KNN Baseline model with the pearson baseline metric and item based filtering. 
+  This resulted in an RMSE of 0.9645. 
