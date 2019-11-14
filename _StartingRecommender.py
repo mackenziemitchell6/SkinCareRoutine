@@ -49,9 +49,7 @@ print('Number of items: ',dataset.n_items) #514
 
 #Trying to Minimize RMSE
 #SVD Grid Search
-params = {'n_factors' :[10,20,30,40,50,60,70,80,90,100,200],
-         'reg_all':[0.02,0.05,0.1,0.4,0.5,0.6],'n_epochs': [5, 10],
-         'lr_all': [0.002, 0.005],'reg_all': [0.4, 0.6]}
+params = {'n_factors' :[10,20,30,40,50,60,70,80,90,100,200],'reg_all':[0.02,0.05,0.1,0.4,0.5,0.6],'n_epochs': [5, 10],'lr_all': [0.002, 0.005],'reg_all': [0.4, 0.6]}
 g_s_svd = GridSearchCV(SVD,param_grid=params,n_jobs=-1)
 g_s_svd.fit(data)
 print(g_s_svd.best_score['rmse'])
