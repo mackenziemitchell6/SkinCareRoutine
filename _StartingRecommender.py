@@ -292,6 +292,6 @@ print('-----------------------')
 print(np.mean(cv_knn_means['test_rmse']))
 #RMSE: 1.015
 
-#Best fit model was KNN Baseline with Pearson Baseline metric and Item Based Filtering with 0.9645 RMSE
+#Best fit model was KNN Baseline with Pearson similarity metric and Item Based Filtering with 0.9634 RMSE
 #Ready to make recommendations in python or a jupyter notebook, just call skin_rec(numProductsWanted)
 
